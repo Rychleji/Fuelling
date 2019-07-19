@@ -1,0 +1,33 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Fuelling</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+
+	<table style="width:100%">
+        <caption style='text-align: left'><b>Fuelling</b></caption>
+        <tr>
+            <th style='text-align: left'>ID</th>
+            <th style='text-align: left'>Litres</th>
+            <th style='text-align: left'>Price per litre</th>
+			<th style='text-align: left'>City</th>
+			<th style='text-align: left'>Car</th>
+            <th style='text-align: left'>Edit</th>
+            <th style='text-align: left'>Erase</th>
+        </tr>
+		<tr th:each="fuel : ${fuellings}">
+		  <td th:text="${fuel.id}">&nbsp;</td>
+		  <td th:text="${fuel.litres}">&nbsp;</td>
+		  <td th:text="${fuel.pricePerLitre}">&nbsp;</td>
+		  <td th:text="${fuel.city}">&nbsp;</td>
+		  <td th:text="${fuel.refuelledCar}">&nbsp;</td>
+		  <td><a th:href="@{fuellingedit?fuel=} + ${fuel.id}">EDIT</a></td>
+          <td><a th:href="@{remove?fuel=} + ${fuel.id}">ERASE</a></td>
+		</tr>
+    </table>
+	<p><a href="/fuellingedit">ADD FUELLING</a></p>
+	<p><a href="/cars">List of cars</a></p>
+</body>
+</html>
