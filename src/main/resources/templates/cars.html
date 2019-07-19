@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Fuelling</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+
+	<table style="width:100%">
+        <caption style='text-align: left'><b>Cars</b></caption>
+        <tr>
+            <th style='text-align: left'>Licence plate</th>
+            <th style='text-align: left'>Colour</th>
+            <th style='text-align: left'>Current mileage</th>
+			<th style='text-align: left'>Fuellings</th>
+            <th style='text-align: left'>Edit</th>
+            <th style='text-align: left'>Erase</th>
+        </tr>
+		<tr th:each="car : ${cars}">
+		  <td th:text="${car.licencePlate}">&nbsp;</td>
+		  <td th:text="${car.colour}">&nbsp;</td>
+		  <td th:text="${car.currentMileage}">&nbsp;</td>
+		  <td><a th:href="@{fuelling?car=} + ${car.licencePlate}">Fuelling list</a></td>
+		  <td><a th:href="@{carsedit?car=} + ${car.licencePlate}">EDIT</a></td>
+          <td><a  th:href="@{remove?car=} + ${car.licencePlate}">ERASE</a></td>
+		</tr>
+    </table>
+	<p><a href="/carsedit">ADD CAR</a></p>
+</body>
+</html>
