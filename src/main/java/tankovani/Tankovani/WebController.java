@@ -36,5 +36,25 @@ public class WebController {
             database.removeFuelling(Long.parseLong(id));
         return "remove";
     }
+    
+    @GetMapping("/caredit")
+    public String caredit(@RequestParam(name="car", required=false, defaultValue = "") String licence, Model model) {
+        if(licence.equals("")){
+            //
+        }else{
+            model.addAttribute("car", database.findCar(licence));
+        }
+        return "caredit";
+    }
+    
+    @GetMapping("/fuellingedit")
+    public String fuellingedit(@RequestParam(name="fuel", required=false, defaultValue = "") String id, Model model) {
+        if(id.equals("")){
+            //
+        }else{
+            model.addAttribute("car", database.findFuelling(id));
+        }
+        return "fuellingedit";
+    }
 
 }

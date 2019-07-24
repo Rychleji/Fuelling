@@ -80,6 +80,14 @@ public class DatabaseControls {
         }
     }*/
     
+    public Car findCar(String licence){
+        String sql = "SELECT * FROM CAR WHERE LICENCE_PLATE = ?";
+        Car car = (Car)jdbcTemplate.queryForObject(
+			sql, new Object[] { licence }, 
+			new BeanPropertyRowMapper(Car.class));
+        return car;
+    }
+    
     public List<Car> findAllCars() {
         String sql = "SELECT * FROM CAR";
 		
@@ -87,6 +95,14 @@ public class DatabaseControls {
 			new BeanPropertyRowMapper(Car.class));
 		
 	return cars;
+    }
+    
+    public Fuelling findFuelling(String id){
+        String sql = "SELECT * FROM FUELLING WHERE ID = ?";
+        Fuelling fuel = (Fuelling)jdbcTemplate.queryForObject(
+			sql, new Object[] { id }, 
+			new BeanPropertyRowMapper(Fuelling.class));
+        return fuel;
     }
     
     public List<Fuelling> findFuellingsByCar(Car car){
