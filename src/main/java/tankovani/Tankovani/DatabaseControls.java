@@ -80,6 +80,22 @@ public class DatabaseControls {
         return true;
     }
     
+    private boolean isCarOkEdit(Car car) throws Exception{
+        if(!isLicenceLengthOk(car.getLicencePlate())){
+            throw new Exception("Too many characters in a Licence plate");
+        }
+        if(!isLicenceFilled(car.getLicencePlate())){
+            throw new Exception("Licence plate is empty");
+        }
+        if(!isMileageOk(car.getCurrentMileage())){
+            throw new Exception("Mileage can not be a negative number");
+        }
+        if(!isColourLengthOk(car.getColour())){
+            throw new Exception("Too many characters in a Colour");
+        }
+        return true;
+    }
+    
     private boolean isFuellingOk(Fuelling fuel) throws Exception{
         if(!isLicenceLengthOk(fuel.getRefuelledCar())){
             throw new Exception("Too many characters in a Licence plate");
@@ -139,7 +155,7 @@ public class DatabaseControls {
     public void editCar(Car car, String oldLicence) throws Exception {
         logger.info("Editing car: " + car.getLicencePlate());
         
-        isCarOk(car);
+        isCarOkEdit(car);
         
         jdbcTemplate.update("update CAR "
                 + "set LICENCE_PLATE = (?), COLOUR = (?), CURRENT_MILEAGE = (?) "
