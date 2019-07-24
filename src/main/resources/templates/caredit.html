@@ -1,0 +1,19 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Fuelling</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+  <form autocomplete="off">
+  Licence plate:<br>
+  <input type="text" name="licence" th:value="${car.licencePlate}"><br>
+  Colour:<br>
+  <input type="text" name="colour" th:value="${car.colour}" autocomplete="on"><br>
+  Current mileage:<br>
+  <input type="text" name="mileage" th:value="${car.currentMileage}"><br>
+  <input type="submit" value="Submit">
+  <form action="/caredited" method="post"> 
+</form>
+</body>
+</html>

@@ -1,0 +1,21 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Fuelling</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+  <form autocomplete="off">
+  Litres:<br>
+  <input type="text" name="litres" th:value="${fuelling.litres}"><br>
+  Price per litre:<br>
+  <input type="text" name="price" th:value="${fuelling.pricePerLitre}"><br>
+  City:<br>
+  <input type="text" name="city" th:value="${fuelling.city}" autocomplete="on"><br>
+  Refuelled car:<br>
+  <input type="text" name="car" th:value="${fuelling.refuelledCar}"><br>
+  <input type="submit" value="Submit">
+  <form action="/fuellingedited" method="post"> 
+</form>
+</body>
+</html>
