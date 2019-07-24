@@ -37,10 +37,10 @@ public class WebController {
         return "remove";
     }
     
-    @GetMapping("/caredit")
+    @GetMapping("/carsedit")
     public String caredit(@RequestParam(name="car", required=false, defaultValue = "") String licence, Model model) {
         if(licence.equals("")){
-            //
+            model.addAttribute("car", new Car());
         }else{
             model.addAttribute("car", database.findCar(licence));
         }
@@ -50,9 +50,9 @@ public class WebController {
     @GetMapping("/fuellingedit")
     public String fuellingedit(@RequestParam(name="fuel", required=false, defaultValue = "") String id, Model model) {
         if(id.equals("")){
-            //
+            model.addAttribute("fuelling", new Fuelling());
         }else{
-            model.addAttribute("car", database.findFuelling(id));
+            model.addAttribute("fuelling", database.findFuelling(id));
         }
         return "fuellingedit";
     }
