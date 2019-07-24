@@ -59,26 +59,30 @@ public class WebController {
     }
     
     @GetMapping("/caredited")
-    public String carEdited(@RequestParam(name="oldLocence", required=false, defaultValue = "") String oldLicence,
+    public String carEdited(@RequestParam(name="oldLicence", required=false, defaultValue = "") String oldLicence,
             @RequestParam(name="licence", required=true) String licence, 
             @RequestParam(name="colour", required=true) String colour, 
             @RequestParam(name="mileage", required=true) String mileage, Model model) {
-        /*if(licence.equals("")){
-            model.addAttribute("car", new Car());
+        if(oldLicence.equals("")){
+            database.addCar(new Car(licence, colour, Integer.parseInt(mileage)));
         }else{
-            model.addAttribute("car", database.findCar(licence));
-        }*/
-        return "caredited";
+            database.editCar(new Car(licence, colour, Integer.parseInt(mileage)), oldLicence);
+        }
+        return "redirect:cars";
     }
     
     @GetMapping("/fuellingedited")
-    public String fuellingEdited(@RequestParam(name="fuel", required=false, defaultValue = "") String id, Model model) {
-        if(id.equals("")){
-            model.addAttribute("fuelling", new Fuelling());
+    public String fuellingEdited(@RequestParam(name="id", required=false, defaultValue = "0") String id,
+            @RequestParam(name="litres", required=true) String litres, 
+            @RequestParam(name="price", required=true) String price, 
+            @RequestParam(name="city", required=true) String city,
+            @RequestParam(name="car", required=true) String car, Model model) {
+        if(id.equals("0")){
+            database.addFuelling(new Fuelling(0, Double.parseDouble(litres), Double.parseDouble(price), city, car));
         }else{
-            model.addAttribute("fuelling", database.findFuelling(id));
+            database.editFuelling(new Fuelling(Integer.parseInt(id), Double.parseDouble(litres), Double.parseDouble(price), city, car));
         }
-        return "fuellingedited";
+        return "redirect:fuelling";
     }
 
 }
