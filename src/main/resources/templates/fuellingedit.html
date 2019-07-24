@@ -5,7 +5,9 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
-  <form autocomplete="off">
+  <form autocomplete="off" action="/fuellingedited" method="get">
+  
+  <input type="text" name="id" hidden="true" th:value="${fuelling.id}">
   Litres:<br>
   <input type="text" name="litres" th:value="${fuelling.litres}"><br>
   Price per litre:<br>
@@ -15,7 +17,6 @@
   Refuelled car:<br>
   <input type="text" name="car" th:value="${fuelling.refuelledCar}"><br>
   <input type="submit" value="Submit">
-  <form action="/fuellingedited" method="post"> 
 </form>
 </body>
 </html>

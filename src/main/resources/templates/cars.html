@@ -21,10 +21,10 @@
 		  <td th:text="${car.colour}">&nbsp;</td>
 		  <td th:text="${car.currentMileage}">&nbsp;</td>
 		  <td><a th:href="@{fuelling?car=} + ${car.licencePlate}">Fuelling list</a></td>
-		  <td><a th:href="@{carsedit?car=} + ${car.licencePlate}">EDIT</a></td>
+		  <td><a th:href="@{caredit?car=} + ${car.licencePlate}">EDIT</a></td>
           <td><a th:href="@{remove?car=} + ${car.licencePlate}">ERASE</a></td>
 		</tr>
     </table>
-	<p><a href="/carsedit">ADD CAR</a></p>
+	<p><a href="/caredit">ADD CAR</a></p>
 </body>
 </html>

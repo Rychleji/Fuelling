@@ -13,7 +13,7 @@ public class Fuelling {
     private String refuelledCar;
     
     public Fuelling(){
-        this(0, 0, 0, "null", "null");
+        this(0, 0, 0, "", "");
     }
 
     public Fuelling(long id, double litres, double pricePerLitre, String city, String refuelledCar) {

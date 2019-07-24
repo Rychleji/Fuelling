@@ -3,6 +3,7 @@ package tankovani.Tankovani;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
@@ -37,8 +38,8 @@ public class WebController {
         return "remove";
     }
     
-    @GetMapping("/carsedit")
-    public String caredit(@RequestParam(name="car", required=false, defaultValue = "") String licence, Model model) {
+    @GetMapping("/caredit")
+    public String carEdit(@RequestParam(name="car", required=false, defaultValue = "") String licence, Model model) {
         if(licence.equals("")){
             model.addAttribute("car", new Car());
         }else{
@@ -48,13 +49,36 @@ public class WebController {
     }
     
     @GetMapping("/fuellingedit")
-    public String fuellingedit(@RequestParam(name="fuel", required=false, defaultValue = "") String id, Model model) {
+    public String fuellingEdit(@RequestParam(name="fuel", required=false, defaultValue = "") String id, Model model) {
         if(id.equals("")){
             model.addAttribute("fuelling", new Fuelling());
         }else{
             model.addAttribute("fuelling", database.findFuelling(id));
         }
         return "fuellingedit";
+    }
+    
+    @GetMapping("/caredited")
+    public String carEdited(@RequestParam(name="oldLocence", required=false, defaultValue = "") String oldLicence,
+            @RequestParam(name="licence", required=true) String licence, 
+            @RequestParam(name="colour", required=true) String colour, 
+            @RequestParam(name="mileage", required=true) String mileage, Model model) {
+        /*if(licence.equals("")){
+            model.addAttribute("car", new Car());
+        }else{
+            model.addAttribute("car", database.findCar(licence));
+        }*/
+        return "caredited";
+    }
+    
+    @GetMapping("/fuellingedited")
+    public String fuellingEdited(@RequestParam(name="fuel", required=false, defaultValue = "") String id, Model model) {
+        if(id.equals("")){
+            model.addAttribute("fuelling", new Fuelling());
+        }else{
+            model.addAttribute("fuelling", database.findFuelling(id));
+        }
+        return "fuellingedited";
     }
 
 }

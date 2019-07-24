@@ -12,7 +12,7 @@ class Car {
     private int currentMileage;
     
     public Car(){
-        this("null", "null", 0);
+        this("", "", 0);
     }
 
     public Car(String licencePlate, String Colour, int currentMileage) {

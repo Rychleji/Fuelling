@@ -5,7 +5,9 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
-  <form autocomplete="off">
+  <form autocomplete="off" action="/caredited" method="get">
+  
+  <input type="text" name="oldLicence" hidden="true" th:value="${car.licencePlate}">
   Licence plate:<br>
   <input type="text" name="licence" th:value="${car.licencePlate}"><br>
   Colour:<br>
@@ -13,7 +15,6 @@
   Current mileage:<br>
   <input type="text" name="mileage" th:value="${car.currentMileage}"><br>
   <input type="submit" value="Submit">
-  <form action="/caredited" method="post"> 
 </form>
 </body>
 </html>
