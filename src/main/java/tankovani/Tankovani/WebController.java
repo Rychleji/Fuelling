@@ -1,15 +1,16 @@
 package tankovani.Tankovani;
 
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class WebController {
     
     private final DatabaseControls database;
+    private final String exceptStr = "redirect:exception?ex=%s";
 
     public WebController(DatabaseControls database) {
         this.database = database;
@@ -17,24 +18,62 @@ public class WebController {
     
     @GetMapping("/cars")
     public String cars(Model model) {
-        
-        model.addAttribute("cars", database.findAllCars());
+        try{
+            model.addAttribute("cars", database.findAllCars());
+        }catch(NumberFormatException numberEx){
+            return String.format(exceptStr, numberEx.getLocalizedMessage());
+        /*}catch (InvalidResultSetAccessException e){
+            return String.format(exceptStr, e.getLocalizedMessage());*/
+        }catch (DataAccessException e){
+            return String.format(exceptStr, e.getLocalizedMessage());
+        }catch(Exception e){
+            return String.format(exceptStr, e.getLocalizedMessage());
+        }
         return "cars";
     }
     
     @GetMapping("/fuelling")
     public String fuelling(@RequestParam(name="car", required=true) String licence, Model model) {
-        
-        model.addAttribute("fuellings", database.findFuellingsByCar(licence));
+        try{
+            model.addAttribute("fuellings", database.findFuellingsByCar(licence));
+        }catch(NumberFormatException numberEx){
+            return String.format(exceptStr, numberEx.getLocalizedMessage());
+        /*}catch (InvalidResultSetAccessException e){
+            return String.format(exceptStr, e.getLocalizedMessage());*/
+        }catch (DataAccessException e){
+            return String.format(exceptStr, e.getLocalizedMessage());
+        }catch(Exception e){
+            return String.format(exceptStr, e.getLocalizedMessage());
+        }
         return "fuelling";
     }
     
     @GetMapping("/remove")
     public String remove(@RequestParam(name="car", required=false, defaultValue = "") String licence, @RequestParam(name="fuel", required=false, defaultValue = "-1") String id, Model model) {
         if (!"".equals(licence))
-            database.removeCar(licence);
+            try{
+                database.removeCar(licence);
+            }catch(NumberFormatException numberEx){
+                return String.format(exceptStr, numberEx.getLocalizedMessage());
+            /*}catch (InvalidResultSetAccessException e){
+                return String.format(exceptStr, e.getLocalizedMessage());*/
+            }catch (DataAccessException e){
+                return String.format(exceptStr, e.getLocalizedMessage());
+            }catch(Exception e){
+                return String.format(exceptStr, e.getLocalizedMessage());
+            }
         if(!"-1".equals(id))
-            database.removeFuelling(Long.parseLong(id));
+            try{
+                database.removeFuelling(Long.parseLong(id));
+            }catch(NumberFormatException numberEx){
+                return String.format(exceptStr, numberEx.getLocalizedMessage());
+            /*}catch (InvalidResultSetAccessException e){
+                return String.format(exceptStr, e.getLocalizedMessage());*/
+            }catch (DataAccessException e){
+                return String.format(exceptStr, e.getLocalizedMessage());
+            }catch(Exception e){
+                return String.format(exceptStr, e.getLocalizedMessage());
+            }
         return "remove";
     }
     
@@ -64,9 +103,30 @@ public class WebController {
             @RequestParam(name="colour", required=true) String colour, 
             @RequestParam(name="mileage", required=true) String mileage, Model model) {
         if(oldLicence.equals("")){
-            database.addCar(new Car(licence, colour, Integer.parseInt(mileage)));
+            try{
+                database.addCar(new Car(licence, colour, Integer.parseInt(mileage)));
+            }catch(NumberFormatException numberEx){
+                return String.format(exceptStr, numberEx.getLocalizedMessage());
+            /*}catch (InvalidResultSetAccessException e){
+                return String.format(exceptStr, e.getLocalizedMessage());*/
+            }catch (DataAccessException e){
+                return String.format(exceptStr, e.getLocalizedMessage());
+            }catch(Exception e){
+                return String.format(exceptStr, e.getLocalizedMessage());
+            }
+            
         }else{
-            database.editCar(new Car(licence, colour, Integer.parseInt(mileage)), oldLicence);
+            try{
+                database.editCar(new Car(licence, colour, Integer.parseInt(mileage)), oldLicence);
+            }catch(NumberFormatException numberEx){
+                return String.format(exceptStr, numberEx.getLocalizedMessage());
+            /*}catch (InvalidResultSetAccessException e){
+                return String.format(exceptStr, e.getLocalizedMessage());*/
+            }catch (DataAccessException e){
+                return String.format(exceptStr, e.getLocalizedMessage());
+            }catch(Exception e){
+                return String.format(exceptStr, e.getLocalizedMessage());
+            }
         }
         return "redirect:cars";
     }
@@ -78,11 +138,38 @@ public class WebController {
             @RequestParam(name="city", required=true) String city,
             @RequestParam(name="car", required=true) String car, Model model) {
         if(id.equals("0")){
-            database.addFuelling(new Fuelling(0, Double.parseDouble(litres), Double.parseDouble(price), city, car));
+            try{
+                database.addFuelling(new Fuelling(0, Double.parseDouble(litres), Double.parseDouble(price), city, car));
+            }catch(NumberFormatException numberEx){
+                return String.format(exceptStr, numberEx.getLocalizedMessage());
+            /*}catch (InvalidResultSetAccessException e){
+                return String.format(exceptStr, e.getLocalizedMessage());*/
+            }catch (DataAccessException e){
+                return String.format(exceptStr, e.getLocalizedMessage());
+            }catch(Exception e){
+                return String.format(exceptStr, e.getLocalizedMessage());
+            }
         }else{
-            database.editFuelling(new Fuelling(Integer.parseInt(id), Double.parseDouble(litres), Double.parseDouble(price), city, car));
+            try{
+                database.editFuelling(new Fuelling(Integer.parseInt(id), Double.parseDouble(litres), Double.parseDouble(price), city, car));
+            }catch(NumberFormatException numberEx){
+                return String.format(exceptStr, numberEx.getLocalizedMessage());
+            /*}catch (InvalidResultSetAccessException e){
+                return String.format(exceptStr, e.getLocalizedMessage());*/
+            }catch (DataAccessException e){
+                return String.format(exceptStr, e.getLocalizedMessage());
+            }catch(Exception e){
+                return String.format(exceptStr, e.getLocalizedMessage());
+            }
         }
-        return "redirect:fuelling";
+        return "redirect:fuelling?car="+car;
     }
-
+    
+    @GetMapping("/exception")
+    public String exception(@RequestParam(name="ex", required=true) String e, Model model) {
+        
+        model.addAttribute("exception", e);
+        
+        return "exception";
+    }
 }

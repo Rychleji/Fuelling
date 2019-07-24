@@ -26,9 +26,87 @@ public class DatabaseControls {
         this.jdbcTemplate = jdbcTemplate;
     }
     
+    private boolean isLicenceLengthOk(String licence){
+        return licence.length()<=8;
+    }
+    
+    private boolean isPriceOk(double price){
+        return price <= 99.9 && price >= 0;
+    }
+    
+    private boolean isLitresOk(double litres){
+        return litres >= 0;
+    }
+    
+    private boolean isCityLengthOk(String city){
+        return city.length()<=60;
+    }
+    
+    private boolean isColourLengthOk(String colour){
+        return colour.length()<=20;
+    }
+    
+    private boolean isMileageOk(int mileage){
+        return mileage>=0;
+    }
+    
+    private boolean isLicenceFilled(String licence){
+        return licence.length()>0;
+    }
+    
+    private boolean carExists(String licence){
+        String sql = "SELECT count(*) FROM CAR WHERE LICENCE_PLATE = ?";
+        int count = jdbcTemplate.queryForObject(sql, new Object[] { licence }, Integer.class);
+
+        return count>0;
+    }
+    
+    private boolean isCarOk(Car car) throws Exception{
+        if(!isLicenceLengthOk(car.getLicencePlate())){
+            throw new Exception("Too many characters in a Licence plate");
+        }
+        if(!isLicenceFilled(car.getLicencePlate())){
+            throw new Exception("Licence plate is empty");
+        }
+        if(carExists(car.getLicencePlate())){
+            throw new Exception("Car with this licence plate alredy exists");
+        }
+        if(!isMileageOk(car.getCurrentMileage())){
+            throw new Exception("Mileage can not be a negative number");
+        }
+        if(!isColourLengthOk(car.getColour())){
+            throw new Exception("Too many characters in a Colour");
+        }
+        return true;
+    }
+    
+    private boolean isFuellingOk(Fuelling fuel) throws Exception{
+        if(!isLicenceLengthOk(fuel.getRefuelledCar())){
+            throw new Exception("Too many characters in a Licence plate");
+        }
+        if(!isLicenceFilled(fuel.getRefuelledCar())){
+            throw new Exception("Licence plate is empty");
+        }
+        if(!carExists(fuel.getRefuelledCar())){
+            throw new Exception("Car with this licence plate doesn't exist");
+        }
+        if(!isPriceOk(fuel.getPricePerLitre())){
+            throw new Exception("Price has to be between 0.0 and 99.9 (including)");
+        }
+        if(!isLitresOk(fuel.getPricePerLitre())){
+            throw new Exception("Litres can not be a negative number");
+        }
+        if(!isCityLengthOk(fuel.getCity())){
+            throw new Exception("Too many characters in a City");
+        }
+        return true;
+    }
+    
     @Transactional
-    public void addCar(Car car) {
+    public void addCar(Car car) throws Exception {
         logger.info("Adding car: " + car.getLicencePlate());
+        
+        isCarOk(car);
         
         SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate).withTableName("CAR");
         
@@ -41,7 +119,10 @@ public class DatabaseControls {
     }
     
     @Transactional
-    public void addFuelling(Fuelling fuelling) {
+    public void addFuelling(Fuelling fuelling) throws Exception {
+        
+        isFuellingOk(fuelling);
+        
         SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate).withTableName("FUELLING").usingGeneratedKeyColumns("ID");
         
         Map<String, Object> parameters = new HashMap<>();
@@ -55,8 +136,10 @@ public class DatabaseControls {
     }
     
     @Transactional
-    public void editCar(Car car, String oldLicence) {
+    public void editCar(Car car, String oldLicence) throws Exception {
         logger.info("Editing car: " + car.getLicencePlate());
+        
+        isCarOk(car);
         
         jdbcTemplate.update("update CAR "
                 + "set LICENCE_PLATE = (?), COLOUR = (?), CURRENT_MILEAGE = (?) "
@@ -65,7 +148,9 @@ public class DatabaseControls {
     }
     
     @Transactional
-    public void editFuelling(Fuelling fuelling) {
+    public void editFuelling(Fuelling fuelling) throws Exception {
+        isFuellingOk(fuelling);
+        
         logger.info("Editing fuelling: " + fuelling.getId());
         
         jdbcTemplate.update("update FUELLING "
@@ -84,7 +169,7 @@ public class DatabaseControls {
         String sql = "SELECT * FROM CAR WHERE LICENCE_PLATE = ?";
         Car car = (Car)jdbcTemplate.queryForObject(
 			sql, new Object[] { licence }, 
-			new BeanPropertyRowMapper(Car.class));
+			new BeanPropertyRowMapper(Car.class));        
         return car;
     }
     
