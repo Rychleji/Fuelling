@@ -23,11 +23,11 @@
 		  <td th:text="${fuel.pricePerLitre}">&nbsp;</td>
 		  <td th:text="${fuel.city}">&nbsp;</td>
 		  <td th:text="${fuel.refuelledCar}">&nbsp;</td>
-		  <td><a th:href="@{fuellingedit?fuel=} + ${fuel.id}">EDIT</a></td>
+		  <td><a th:href="@{fuellingedit?car=} + ${fuellings[0].refuelledCar} + @{&fuel=} + ${fuel.id}">EDIT</a></td>
           <td><a th:href="@{remove?fuel=} + ${fuel.id}">ERASE</a></td>
 		</tr>
     </table>
-	<p><a href="/fuellingedit">ADD FUELLING</a></p>
+	<p><a th:href="@{fuellingedit?car=}+${fuellings[0].refuelledCar}">ADD FUELLING</a></p>
 	<p><a href="/cars">List of cars</a></p>
 </body>
 </html>
