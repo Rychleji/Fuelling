@@ -88,12 +88,14 @@ public class WebController {
     }
     
     @GetMapping("/fuellingedit")
-    public String fuellingEdit(@RequestParam(name="fuel", required=false, defaultValue = "") String id, Model model) {
+    public String fuellingEdit(@RequestParam(name="fuel", required=false, defaultValue = "") String id,
+            @RequestParam(name="car", required=true) String carLicence, Model model) {
         if(id.equals("")){
             model.addAttribute("fuelling", new Fuelling());
         }else{
             model.addAttribute("fuelling", database.findFuelling(id));
         }
+        model.addAttribute("oldCar", carLicence);
         return "fuellingedit";
     }
     
